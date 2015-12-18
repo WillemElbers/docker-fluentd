@@ -10,6 +10,11 @@ RUN curl https://packages.treasuredata.com/GPG-KEY-td-agent | apt-key add - && \
 
 RUN td-agent-gem install fluent-plugin-secure-forward
 
+RUN mkdir -p /data/cert && \
+    /opt/td-agent/embedded/lib/ruby/gems/2.1.0/bin/secure-forward-ca-generate /data/cert/ verysecretpassphrase
+
 COPY td-agent.conf /etc/td-agent/td-agent.conf
+
+VOLUME ["/data"]
 
 ENTRYPOINT ["/usr/sbin/td-agent"]
